@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Profil – Sami</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* ---------- Fonts ---------- */
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Fira+Code:wght@400;500&display=swap');
+
+    :root {
+      --bg1: #050717;
+      --bg2: #120024;
+      --accent: #7b5cff;
+      --accent-soft: #4d9dff;
+      --fg: #e9f3ff;
+      --muted: #a7b3d9;
+      --card-bg: rgba(10, 14, 35, 0.85);
+      --border-soft: rgba(255, 255, 255, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Montserrat', system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(123, 92, 255, 0.25), transparent 55%),
+        radial-gradient(circle at 80% 85%, rgba(77, 157, 255, 0.22), transparent 55%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    /* ---------- Decorative layers ---------- */
+    .background-orbit {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.15;
+      mix-blend-mode: screen;
+    }
+
+    .background-orbit::before,
+    .background-orbit::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .background-orbit::before {
+      width: 520px;
+      height: 520px;
+      top: -120px;
+      left: -80px;
+      box-shadow: 0 0 40px rgba(123, 92, 255, 0.4);
+    }
+
+    .background-orbit::after {
+      width: 420px;
+      height: 420px;
+      bottom: -140px;
+      right: -40px;
+      box-shadow: 0 0 40px rgba(77, 157, 255, 0.3);
+    }
+
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.06;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.08) 0px,
+        rgba(255, 255, 255, 0.08) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+      mix-blend-mode: soft-light;
+    }
+
+    /* ---------- Card ---------- */
+    .card {
+      position: relative;
+      width: 100%;
+      max-width: 720px;
+      background: var(--card-bg);
+      border-radius: 24px;
+      border: 1px solid var(--border-soft);
+      box-shadow:
+        0 0 40px rgba(0, 0, 0, 0.7),
+        0 0 50px rgba(123, 92, 255, 0.25);
+      padding: 28px 24px 24px;
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    @media (min-width: 768px) {
+      .card {
+        padding: 36px 40px 32px;
+      }
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.07), transparent 55%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ---------- Header ---------- */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.08), transparent 60%);
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #66ffb7, #0f8a52);
+      box-shadow: 0 0 12px rgba(102, 255, 183, 0.9);
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      line-height: 1.15;
+      margin-bottom: 4px;
+      letter-spacing: 0.03em;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    /* ---------- Text block ---------- */
+    .text-block {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #d8e3ff;
+      margin-bottom: 18px;
+    }
+
+    .text-block span.highlight {
+      color: var(--accent-soft);
+      font-weight: 600;
+    }
+
+    /* ---------- Meta grid ---------- */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 520px) {
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .meta-item {
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: linear-gradient(
+        135deg,
+        rgba(123, 92, 255, 0.18),
+        rgba(77, 157, 255, 0.08)
+      );
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .meta-label {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 2px;
+      opacity: 0.8;
+    }
+
+    .meta-value {
+      font-size: 0.9rem;
+    }
+
+    /* ---------- Toggle button ---------- */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+      opacity: 0.8;
+    }
+
+    .btn-toggle {
+      border: none;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: #0b1020;
+      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+      box-shadow: 0 0 20px rgba(92, 139, 255, 0.6);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-toggle span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #0b1020;
+    }
+
+    .btn-toggle:active {
+      transform: translateY(1px);
+      box-shadow: 0 0 10px rgba(92, 139, 255, 0.7);
+    }
+
+    /* ---------- Footer tag ---------- */
+    .footer-tag {
+      margin-top: 18px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8rem;
+      color: var(--accent-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.9;
+    }
+
+    .footer-tag::before,
+    .footer-tag::after {
+      content: "</>";
+      opacity: 0.25;
+      color: #93bff8;
+    }
+
+    /* ---------- Appear animation ---------- */
+    .card-inner {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fadeUp 600ms ease-out forwards;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background-orbit"></div>
+  <div class="scanlines"></div>
+
+  <main class="card" aria-label="Présentation rapide de Sami">
+    <div class="card-inner">
+      <div class="pill">
+        <span class="pill-dot"></span>
+        PROFIL NEURODIVERGENT
+      </div>
+
+      <h1>Manuel d’utilisation – Sami</h1>
+      <p class="subtitle">
+        Version courte pour comprendre rapidement ma manière de fonctionner.
+      </p>
+
+      <p id="intro-text" class="text-block">
+        Je suis autiste (<span class="highlight">profil Asperger</span>) et mon type de
+        personnalité est <span class="highlight">INFP-T</span>. Concrètement, mon cerveau est
+        très analytique et focalisé (surtout en informatique et réseaux), mais les codes sociaux,
+        le small talk et les situations floues me fatiguent rapidement. Je suis sensible, j’accorde
+        beaucoup d’importance à l’honnêteté et à la cohérence avec mes valeurs, et j’ai besoin
+        qu’on communique avec moi de façon <span class="highlight">claire, directe et respectueuse</span>,
+        de préférence par écrit plutôt qu’à l’oral.
+      </p>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <div class="meta-label">Neurotype</div>
+          <div class="meta-value">Autisme (ancien Asperger)</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Personnalité</div>
+          <div class="meta-value">INFP-T (médiateur, sensible, idéaliste)</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Forces</div>
+          <div class="meta-value">Analyse, focus, logique, technique</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Points de vigilance</div>
+          <div class="meta-value">Surcharge sociale, fatigue mentale, flou relationnel</div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <span class="hint">Tu peux basculer entre deux niveaux de résumé.</span>
+        <button id="toggle-btn" class="btn-toggle" type="button">
+          <span class="dot"></span>
+          VERSION ULTRA COURTE
+        </button>
+      </div>
+
+      <div class="footer-tag">
+        Profil d’usage — pour interagir avec respect et clarté
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const introText = document.getElementById("intro-text");
+    const toggleBtn = document.getElementById("toggle-btn");
+
+    const longText =
+      "Je suis autiste (profil Asperger) et mon type de personnalité est INFP-T. Concrètement, mon cerveau est très analytique et focalisé (surtout en informatique et réseaux), mais les codes sociaux, le small talk et les situations floues me fatiguent rapidement. Je suis sensible, j’accorde beaucoup d’importance à l’honnêteté et à la cohérence avec mes valeurs, et j’ai besoin qu’on communique avec moi de façon claire, directe et respectueuse, de préférence par écrit plutôt qu’à l’oral.";
+
+    const shortText =
+      "Je suis autiste (profil Asperger) et INFP-T : très analytique, très sensible, à l’aise avec la technique mais vite épuisé par le social. J’ai besoin d’échanges clairs, sincères et directs, idéalement par écrit.";
+
+    let isLong = true;
+
+    function setText(content) {
+      // petit fade pour la beauté
+      introText.style.opacity = 0;
+      setTimeout(() => {
+        introText.textContent = "";
+        const span = document.createElement("span");
+        span.textContent = content;
+        introText.appendChild(span);
+        introText.style.opacity = 1;
+      }, 160);
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      isLong = !isLong;
+      setText(isLong ? longText : shortText);
+      toggleBtn.innerHTML = `
+        <span class="dot"></span>
+        ${isLong ? "VERSION ULTRA COURTE" : "VERSION DÉTAILLÉE"}
+      `;
+    });
+  </script>
+</body>
+</html>
